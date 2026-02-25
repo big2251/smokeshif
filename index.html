@@ -3,147 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smoke Packing - Boutique Officielle</title>
+    <title>Smoke Packing | Accès Sécurisé</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: white;
-            margin: 0;
-        }
-        .smoke-container {
-            padding: 20px;
-            border: 2px solid #ff4444;
-            border-radius: 10px;
-            background: #222;
+        body { background-color: #000; color: white; font-family: sans-serif; overflow: hidden; }
+        
+        /* Style de l'écran d'entrée (Age Gate) */
+        #age-gate {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            margin-top: 50px;
+            padding: 20px;
         }
-        .cart-modal { display: none; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
+
+        .logo-gate {
+            color: #ff4444;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .btn-yes { background: #ff4444; color: white; transition: 0.3s; }
+        .btn-yes:hover { background: #cc0000; transform: scale(1.05); }
+        .btn-no { background: #333; color: #ccc; }
+
+        /* Boutique cachée par défaut */
+        #main-content { display: none; }
+
+        .cart-modal { display: none; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
         .cart-modal.active { display: flex; }
-        .product-card { background: #222; border: 1px solid #333; transition: all 0.3s hover; }
-        .product-card:hover { border-color: #ff4444; transform: translateY(-5px); }
-        h1, .brand-color { color: #ff4444; }
-        .btn-action { background-color: #ff4444; color: white; }
-        .btn-action:hover { background-color: #cc0000; }
     </style>
 </head>
 <body>
 
-    <header class="p-6 border-b border-gray-800 bg-black flex justify-between items-center sticky top-0 z-50">
-        <div class="text-left">
-            <h1 class="text-3xl font-black italic m-0">SMOKE PACKING</h1>
-            <p class="text-xs text-gray-500 italic">Système sécurisé activé</p>
+    <div id="age-gate">
+        <div class="logo-gate">SMOKE PACKING</div>
+        <h2 class="text-2xl font-bold mb-4">BIENVENUE SUR VOTRE ESPACE DE VENTE</h2>
+        <p class="text-gray-400 mb-8 uppercase tracking-widest text-sm">Ce site contient des produits destinés aux adultes.</p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+            <button onclick="enterSite()" class="btn-yes flex-1 py-4 rounded-lg font-bold text-lg">J'AI 18 ANS OU PLUS - ENTRER</button>
+            <button onclick="exitSite()" class="btn-no flex-1 py-4 rounded-lg font-bold text-lg text-sm">JE N'AI PAS 18 ANS</button>
         </div>
-        <button onclick="toggleCart()" class="btn-action px-6 py-2 rounded-full font-bold shadow-lg">
-            🛒 PANIER (<span id="cart-count">0</span>)
-        </button>
-    </header>
-
-    <div class="container mx-auto px-4 flex flex-col items-center">
-        <div class="smoke-container w-full max-w-2xl mb-12">
-            <p class="text-xl">Bienvenue sur votre espace de vente.</p>
-            <p class="text-gray-400">Sélectionnez vos modèles Breeze et Vozol ci-dessous.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full mb-20" id="product-list">
-            </div>
+        <p class="mt-8 text-xs text-gray-600 italic italic">Système sécurisé activé. En entrant, vous acceptez nos conditions.</p>
     </div>
 
-    <div id="cart-modal" class="cart-modal fixed inset-0 z-[100] p-4 flex justify-center items-center text-black">
-        <div class="bg-white rounded-lg w-full max-w-md overflow-hidden">
-            <div class="p-4 bg-gray-100 border-b font-bold text-lg text-center">MA COMMANDE - SMOKE PACKING</div>
-            <div id="cart-items" class="p-6 max-h-[350px] overflow-y-auto space-y-4">
-                </div>
-            <div class="p-6 border-t bg-gray-50">
-                <div class="flex justify-between font-black text-xl mb-4">
-                    <span>TOTAL :</span>
-                    <span class="brand-color"><span id="cart-total">0</span> FCFA</span>
-                </div>
-                <button onclick="checkout()" class="w-full btn-action text-white font-bold py-4 rounded shadow-lg transition mb-2">
-                    COMMANDER VIA WHATSAPP
+    <div id="main-content">
+        <header class="bg-black border-b border-zinc-800 p-4 sticky top-0 z-50 shadow-xl">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-black italic text-red-600">SMOKE PACKING</h1>
+                <button onclick="toggleCart()" class="bg-red-600 px-6 py-2 rounded-full font-bold text-sm">
+                    🛒 PANIER (<span id="cart-count">0</span>)
                 </button>
-                <button onclick="toggleCart()" class="w-full text-gray-400 text-sm">Retour à la boutique</button>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-list">
+                </div>
+        </main>
+    </div>
+
+    <div id="cart-modal" class="cart-modal fixed inset-0 z-[100] p-4 flex justify-center items-center">
+        <div class="bg-zinc-900 border border-zinc-700 rounded-2xl w-full max-w-md overflow-hidden text-white">
+            <div class="p-4 bg-zinc-800 border-b border-zinc-700 font-bold text-center">MA COMMANDE</div>
+            <div id="cart-items" class="p-6 max-h-[300px] overflow-y-auto space-y-4"></div>
+            <div class="p-6 border-t border-zinc-700">
+                <div class="flex justify-between font-black text-2xl mb-6">
+                    <span>TOTAL:</span>
+                    <span class="text-red-500"><span id="cart-total">0</span> FCFA</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-green-600 py-4 rounded-xl font-bold hover:bg-green-500 transition">COMMANDER VIA WHATSAPP</button>
+                <button onclick="toggleCart()" class="w-full text-zinc-500 mt-4 text-sm">Retour à la boutique</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. Système des 18 avertissements de Smoke Packing
-        window.onload = function() {
-            for (let i = 1; i <= 18; i++) {
-                alert("AVERTISSEMENT " + i + " / 18 : Veuillez valider l'accès à Smoke Packing.");
-            }
-            renderProducts();
-        };
-
-        // 2. Base de données des produits Breeze & Vozol
         const products = [
-            // BREEZE
-            { id: 1, name: "Breeze Pro", taffs: 2000, price: 7500, brand: "Breeze", img: "https://images.tcdn.com.br/img/img_prod/1126742/pod_descartavel_breeze_pro_2000_puffs_1907_1_f854a61327178051e944d18ecf52277d.jpg" },
+            { id: 1, name: "Breeze Pro", taffs: 2000, price: 7500, brand: "Breeze", img: "https://breezesmoke.com/cdn/shop/files/Breeze_Pro_Cherry_Lemon_300x.png" },
             { id: 2, name: "Breeze Elite", taffs: 4000, price: 10000, brand: "Breeze", img: "https://vape-brands.com/wp-content/uploads/2023/10/Breeze-Elite-Strawberry-Peach-Mint.jpg" },
-            { id: 3, name: "Breeze Prime", taffs: 6000, price: 14000, brand: "Breeze", img: "https://breezesmoke.com/cdn/shop/files/Breeze_Prime_Product_Images_Strawberry_Apple_Watermelon_300x.png?v=1692131234" },
-            // VOZOL
-            { id: 4, name: "Vozol Star 600", taffs: 600, price: 3500, brand: "Vozol", img: "https://cdn.shopify.com/s/files/1/0611/4023/8505/products/vozol-star-600-disposable-vape-pod-kit-p2901-7008_800x.jpg" },
-            { id: 5, name: "Vozol Star 12k", taffs: 12000, price: 18000, brand: "Vozol", img: "https://vozol-vapes.com/wp-content/uploads/2023/12/VOZOL-Star-12000-Strawberry-Ice-Cream.jpg" },
-            { id: 6, name: "Vozol Vista 20k", taffs: 20000, price: 22000, brand: "Vozol", img: "https://vozol-vapes.com/wp-content/uploads/2024/04/VOZOL-Vista-20000-Cherry-Cola.jpg" },
-            { id: 7, name: "Vozol Gear Hookah", taffs: 40000, price: 28000, brand: "Vozol", img: "https://m.media-amazon.com/images/I/61M07Kj6C3L.jpg" }
+            { id: 3, name: "Breeze Mega", taffs: 60000, price: 35000, brand: "Breeze", img: "https://vapes-delivery.com/cdn/shop/files/Breeze_Mega_60000_Puffs_Blue_Raspberry.jpg" },
+            { id: 4, name: "Vozol Star 12k", taffs: 12000, price: 18000, brand: "Vozol", img: "https://vozol-vapes.com/wp-content/uploads/2023/12/VOZOL-Star-12000-Strawberry-Ice-Cream.jpg" },
+            { id: 5, name: "Vozol Vista 20k", taffs: 20000, price: 22000, brand: "Vozol", img: "https://vozol-vapes.com/wp-content/uploads/2024/04/VOZOL-Vista-20000-Cherry-Cola.jpg" },
+            { id: 6, name: "Vozol Gear Hookah", taffs: 40000, price: 28000, brand: "Vozol", img: "https://m.media-amazon.com/images/I/61M07Kj6C3L.jpg" }
         ];
 
         let cart = [];
 
-        // 3. Affichage des produits
+        function enterSite() {
+            document.getElementById('age-gate').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.body.style.overflow = 'auto';
+            renderProducts();
+        }
+
+        function exitSite() {
+            window.location.href = "https://www.google.com";
+        }
+
         function renderProducts() {
             const list = document.getElementById('product-list');
             list.innerHTML = products.map(p => `
-                <div class="product-card rounded-xl overflow-hidden shadow-2xl">
-                    <div class="h-56 bg-white overflow-hidden">
-                        <img src="${p.img}" class="w-full h-full object-contain hover:scale-110 transition duration-500">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-lg hover:border-red-600 transition group">
+                    <div class="h-48 bg-white rounded-xl mb-4 p-2">
+                        <img src="${p.img}" class="w-full h-full object-contain transition-transform group-hover:scale-110">
                     </div>
-                    <div class="p-5">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">${p.brand}</span>
-                        <h3 class="text-lg font-bold mt-1 text-white">${p.name}</h3>
-                        <p class="text-sm brand-color mb-4">${p.taffs.toLocaleString()} Puffs</p>
-                        <div class="flex justify-between items-center border-t border-gray-800 pt-4">
-                            <span class="text-xl font-black">${p.price.toLocaleString()} <small class="text-xs">CFA</small></span>
-                            <button onclick="addToCart(${p.id})" class="btn-action text-white px-4 py-2 rounded font-bold text-sm">AJOUTER</button>
-                        </div>
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase">${p.brand}</span>
+                    <h3 class="text-lg font-bold text-white">${p.name}</h3>
+                    <p class="text-sm text-red-500 mb-4">${p.taffs.toLocaleString()} Puffs</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xl font-black">${p.price.toLocaleString()} FCFA</span>
+                        <button onclick="addToCart(${p.id})" class="bg-white text-black w-10 h-10 rounded-lg font-bold hover:bg-red-600 hover:text-white transition">＋</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 4. Gestion du panier
         function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
+            const p = products.find(x => x.id === id);
+            cart.push(p);
             updateCart();
         }
 
         function updateCart() {
             document.getElementById('cart-count').innerText = cart.length;
             const cartItems = document.getElementById('cart-items');
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const total = cart.reduce((s, i) => s + i.price, 0);
             
-            if(cart.length === 0) {
-                cartItems.innerHTML = `<p class="text-center text-gray-400">Le panier est vide</p>`;
-            } else {
-                cartItems.innerHTML = cart.map((item, index) => `
-                    <div class="flex justify-between items-center border-b pb-2">
-                        <div>
-                            <p class="font-bold text-sm">${item.name}</p>
-                            <p class="text-xs text-gray-500">${item.price.toLocaleString()} FCFA</p>
-                        </div>
-                        <button onclick="removeItem(${index})" class="text-red-500 font-bold">✕</button>
+            cartItems.innerHTML = cart.map((item, idx) => `
+                <div class="flex justify-between items-center bg-zinc-800 p-3 rounded-lg">
+                    <span class="text-sm">${item.name}</span>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold text-red-500">${item.price}</span>
+                        <button onclick="removeItem(${idx})" class="text-zinc-500">✕</button>
                     </div>
-                `).join('');
-            }
+                </div>
+            `).join('');
             document.getElementById('cart-total').innerText = total.toLocaleString();
         }
 
-        function removeItem(index) {
-            cart.splice(index, 1);
+        function removeItem(idx) {
+            cart.splice(idx, 1);
             updateCart();
         }
 
@@ -151,16 +159,12 @@
             document.getElementById('cart-modal').classList.toggle('active');
         }
 
-        // 5. Envoi WhatsApp
         function checkout() {
-            if(cart.length === 0) return alert("Le panier est vide !");
-            let msg = "💨 *NOUVELLE COMMANDE SMOKE PACKING*\n\n";
-            cart.forEach(item => msg += `• ${item.name} (${item.taffs} taffs) : ${item.price} FCFA\n`);
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            msg += `\n💰 *TOTAL : ${total} FCFA*`;
-            
-            const tonNumero = "2250000000000"; // CHANGE CECI
-            window.open(`https://wa.me/${tonNumero}?text=${encodeURIComponent(msg)}`);
+            if(cart.length === 0) return alert("Votre panier est vide");
+            let msg = "🚀 *COMMANDE SMOKE PACKING*\n\n";
+            cart.forEach(item => msg += `• ${item.name} (${item.taffs} puffs) - ${item.price} FCFA\n`);
+            msg += `\n💰 *TOTAL : ${cart.reduce((s,i)=>s+i.price,0)} FCFA*`;
+            window.open(`https://wa.me/22500000000?text=${encodeURIComponent(msg)}`);
         }
     </script>
 </body>
